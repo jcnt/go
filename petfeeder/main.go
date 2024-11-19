@@ -44,9 +44,13 @@ var cfg = mysql.Config{
 
 func main() {
 
+	// temporary
+	id := strconv.Itoa(rand.Intn(10) + 20)
+	// temporary
+
 	//	loadOwners()
 	//	loadPets()
-	a, b := randData()
+	a, b := randData(id, id)
 
 	fmt.Println(owners)
 	fmt.Println()
@@ -116,7 +120,7 @@ func getNextId(id string) {
 
 }
 
-func randData() (Owner, Pet) {
+func randData(oid string, pid string) (Owner, Pet) {
 
 	t := time.Now()
 	rand.NewSource(t.UnixNano())
@@ -126,10 +130,6 @@ func randData() (Owner, Pet) {
 	street := []string{"Third", "First", "Fourth", "Park", "Fifth", "Main", "Sixth", "Oak", "Seventh", "Pine", "Maple", "Cedar", "Eighth", "Elm", "View", "Washington", "Ninth", "Lake", "Hill", "High", "Station", "Main", "Park", "Church", "London", "Victoria", "Green", "Manor", "Park", "Queens", "Grange", "Kings", "Kingsway", "Windsor", "Alexander", "York", "Broadway", "Springfield", "Richmond", "Taylor"}
 	city := []string{"Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona"}
 	pet := []string{"Milo", "Teddy", "Buddy", "Alfie", "Max", "Charlie", "Bailey", "Reggie", "Bruno", "Hugo", "Luna", "Bella", "Lola", "Poppy", "Daisy", "Coco", "Ruby", "Molly", "Rosie", "Willow", "Milo", "Teddy", "Buddy", "Alfie", "Max", "Charlie", "Bailey", "Reggie", "Bruno", "Hugo", "Luna", "Bella", "Lola", "Poppy", "Daisy", "Coco", "Ruby", "Molly", "Rosie", "Willow"}
-
-	// temporary
-	id := strconv.Itoa(rand.Intn(10) + 20)
-	// temporary
 
 	year, _, _ := time.Now().Date()
 
@@ -159,7 +159,7 @@ func randData() (Owner, Pet) {
 	birth := "20" + strconv.Itoa(rand.Intn(12)+year-2012) + "-" + month + "-" + day
 
 	rowner := Owner{
-		id,
+		oid,
 		first[rand.Intn(len(first))],
 		last[rand.Intn(len(last))],
 		strconv.Itoa(rand.Intn(100)) + " " + strconv.Itoa(rand.Intn(len(street))),
@@ -168,11 +168,11 @@ func randData() (Owner, Pet) {
 	}
 
 	rpet := Pet{
-		strconv.Itoa(rand.Intn(10) + 20),
+		pid,
 		pet[rand.Intn(len(pet))],
 		birth,
 		strconv.Itoa(rand.Intn(5) + 1),
-		id,
+		oid,
 	}
 
 	return rowner, rpet
