@@ -112,6 +112,10 @@ func insertOwners() {
 
 }
 
+func getNextId(id string) {
+
+}
+
 func randData() (Owner, Pet) {
 
 	t := time.Now()
@@ -127,15 +131,33 @@ func randData() (Owner, Pet) {
 	id := strconv.Itoa(rand.Intn(10) + 20)
 	// temporary
 
+	//	year, _, _ := time.Now().Date()
+
 	var month string
-	if m := rand.Intn((12) + 1); m < 10 {
+	if m := rand.Intn(12) + 1; m < 10 {
 		month = "0" + strconv.Itoa(m)
 	} else {
 		month = strconv.Itoa(m)
 	}
 
+	var day string
+	var dmax int
+	switch month {
+	case "01", "03", "05", "07", "08", "10", "12":
+		dmax = 31
+	case "02":
+		dmax = 28
+	default:
+		dmax = 30
+	}
+	if d := rand.Intn(dmax) + 1; d < 10 {
+		day = "0" + strconv.Itoa(d)
+	} else {
+		day = strconv.Itoa(d)
+	}
+
 	birth := "20" + strconv.Itoa(rand.Intn(15)+10) + "-" +
-		month + "-" + strconv.Itoa(rand.Intn(28)+1)
+		month + "-" + day
 	fmt.Println(birth)
 
 	rowner := Owner{
