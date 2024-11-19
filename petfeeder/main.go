@@ -172,7 +172,7 @@ func randData() (Owner, Pet) {
 	rpet := Pet{
 		strconv.Itoa(rand.Intn(10) + 20),
 		pet[rand.Intn(len(pet))],
-		"2006-10-10",
+		birth,
 		strconv.Itoa(rand.Intn(5) + 1),
 		id,
 	}
