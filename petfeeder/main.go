@@ -131,7 +131,7 @@ func randData() (Owner, Pet) {
 	id := strconv.Itoa(rand.Intn(10) + 20)
 	// temporary
 
-	//	year, _, _ := time.Now().Date()
+	year, _, _ := time.Now().Date()
 
 	var month string
 	if m := rand.Intn(12) + 1; m < 10 {
@@ -156,9 +156,7 @@ func randData() (Owner, Pet) {
 		day = strconv.Itoa(d)
 	}
 
-	birth := "20" + strconv.Itoa(rand.Intn(15)+10) + "-" +
-		month + "-" + day
-	fmt.Println(birth)
+	birth := "20" + strconv.Itoa(rand.Intn(12)+year-2012) + "-" + month + "-" + day
 
 	rowner := Owner{
 		id,
