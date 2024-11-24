@@ -234,7 +234,7 @@ func randData(soid string, spid string) (Owner, Pet) {
 	last := []string{"Jones", "Williams", "Taylor", "Brown", "Davies", "Evans", "Wilson", "Thomas", "Johnson", "Roberts", "Robinson", "Thompson", "Wright", "Walker", "White", "Edwards", "Hughes", "Green", "Hall", "Lewis", "Harris", "Clarke", "Patel", "Jackson", "Wood", "Turner", "Martin", "Cooper", "Hill", "Ward", "Morris", "Moore", "Clark", "Lee", "King", "Baker", "Harrison", "Morgan", "Allen", "Johnson"}
 	street := []string{"Third", "First", "Fourth", "Park", "Fifth", "Main", "Sixth", "Oak", "Seventh", "Pine", "Maple", "Cedar", "Eighth", "Elm", "View", "Washington", "Ninth", "Lake", "Hill", "High", "Station", "Main", "Park", "Church", "London", "Victoria", "Green", "Manor", "Park", "Queens", "Grange", "Kings", "Kingsway", "Windsor", "Alexander", "York", "Broadway", "Springfield", "Richmond", "Taylor"}
 	stType := []string{"St.", "Rd.", "Dr.", "Av.", "Exp."}
-	city := []string{"Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison", "Sun Prairie", "McFarland", "Windsor", "Monona"}
+	city := []string{"Sun Prairie", "McFarland", "Windsor", "Monona", "Waunakee", "Madison"}
 	pet := []string{"Milo", "Teddy", "Buddy", "Alfie", "Max", "Charlie", "Bailey", "Reggie", "Bruno", "Hugo", "Luna", "Bella", "Lola", "Poppy", "Daisy", "Coco", "Ruby", "Molly", "Rosie", "Willow", "Milo", "Teddy", "Buddy", "Alfie", "Max", "Charlie", "Bailey", "Reggie", "Bruno", "Hugo", "Luna", "Bella", "Lola", "Poppy", "Daisy", "Coco", "Ruby", "Molly", "Rosie", "Willow"}
 
 	year, _, _ := time.Now().Date()
@@ -268,7 +268,8 @@ func randData(soid string, spid string) (Owner, Pet) {
 		soid,
 		first[rand.Intn(len(first))],
 		last[rand.Intn(len(last))],
-		strconv.Itoa(rand.Intn(5000)) + " " + street[rand.Intn(len(street))] + " " + stType[rand.Intn(len(stType))],
+		strconv.Itoa(rand.Intn(5000)) + " " + street[rand.Intn(len(street))] +
+			" " + stType[rand.Intn(len(stType))],
 		city[rand.Intn(len(city))],
 		"6" + strconv.Itoa(rand.Intn(999999999)),
 	}
