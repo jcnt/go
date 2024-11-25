@@ -271,7 +271,7 @@ func randData(soid string, spid string) (Owner, Pet) {
 		strconv.Itoa(rand.Intn(5000)) + " " + street[rand.Intn(len(street))] +
 			" " + stType[rand.Intn(len(stType))],
 		city[rand.Intn(len(city))],
-		"6" + strconv.Itoa(rand.Intn(999999999)),
+		"6" + strconv.Itoa(rand.Intn(999999999)+6000000000),
 	}
 
 	rpet := Pet{
