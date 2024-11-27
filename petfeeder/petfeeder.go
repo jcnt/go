@@ -30,9 +30,11 @@ type Pet struct {
 	Oid   string
 }
 
-var owners []Owner
-var pets []Pet
-var db *sql.DB
+var (
+	owners []Owner
+	pets   []Pet
+	db     *sql.DB
+)
 
 var cfg = mysql.Config{
 	User:                 os.Getenv("PETDBUSER"),
