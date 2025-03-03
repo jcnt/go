@@ -77,7 +77,6 @@ func main() {
 
 func loadOwners() {
 	owners = []Owner{}
-	pets = []Pet{}
 
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 
@@ -101,10 +100,10 @@ func loadOwners() {
 		}
 		owners = append(owners, owner)
 	}
-
 }
 
 func loadPets() {
+	pets = []Pet{}
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 
 	if err != nil {
@@ -127,32 +126,6 @@ func loadPets() {
 		}
 		pets = append(pets, pet)
 	}
-}
-
-func insertData(rowner Owner, rpet Pet) (sql.Result, sql.Result) {
-
-	db, err := sql.Open("mysql", cfg.FormatDSN())
-
-	if err != nil {
-		fmt.Println("SQL Open failed")
-	}
-
-	defer db.Close()
-
-	resultOwner, err := db.Exec("INSERT INTO owners VALUES (?, ?, ?, ?, ?, ?)",
-		rowner.Id, rowner.First, rowner.Last, rowner.Address, rowner.City, rowner.Phone)
-	if err != nil {
-		fmt.Println("Owner Insert Failed")
-	}
-
-	resultPet, err := db.Exec("INSERT INTO pets VALUES (?,?,?,?,?)",
-		rpet.Id, rpet.Name, rpet.Birth, rpet.Type, rpet.Oid)
-	if err != nil {
-		fmt.Println("Pet Insert Failed")
-	}
-
-	return resultOwner, resultPet
-
 }
 
 func getNextId() (string, string) {
@@ -189,6 +162,32 @@ func getNextId() (string, string) {
 
 }
 
+func insertData(rowner Owner, rpet Pet) (sql.Result, sql.Result) {
+
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+
+	if err != nil {
+		fmt.Println("SQL Open failed")
+	}
+
+	defer db.Close()
+
+	resultOwner, err := db.Exec("INSERT INTO owners VALUES (?, ?, ?, ?, ?, ?)",
+		rowner.Id, rowner.First, rowner.Last, rowner.Address, rowner.City, rowner.Phone)
+	if err != nil {
+		fmt.Println("Owner Insert Failed")
+	}
+
+	resultPet, err := db.Exec("INSERT INTO pets VALUES (?,?,?,?,?)",
+		rpet.Id, rpet.Name, rpet.Birth, rpet.Type, rpet.Oid)
+	if err != nil {
+		fmt.Println("Pet Insert Failed")
+	}
+
+	return resultOwner, resultPet
+
+}
+
 func deleteRows(row int) (sql.Result, sql.Result) {
 
 	var rows []int
@@ -220,7 +219,7 @@ func deleteRows(row int) (sql.Result, sql.Result) {
 		b, err = db.Exec("DELETE FROM owners WHERE id = (?)", v)
 
 		if err != nil {
-			fmt.Println("Owner Insert Failed")
+			fmt.Println("Owner Delete Failed")
 		}
 
 	}
