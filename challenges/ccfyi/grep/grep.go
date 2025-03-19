@@ -13,50 +13,54 @@ var output []string
 func main() {
 
 	alen := len(os.Args)
-	var sub string
 
 	if alen == 1 {
-		// error
+		// usage
+		fmt.Println("usage: grep [-ivc]")
 	} else if alen == 2 {
 		// grep string stdin
 		readstdin()
-		sub = os.Args[1]
-		noarg(sub)
+		noarg(os.Args[1])
 		printout()
 	} else if alen == 3 {
 		if os.Args[1] == "-i" {
 			// grep -i string stdin
 			readstdin()
-			sub = os.Args[2]
-			argi(sub)
+			argi(os.Args[2])
 			printout()
 		} else if os.Args[1] == "-v" {
 			// grep -v string stdin
 			readstdin()
-			sub = os.Args[2]
-			argv(sub)
+			argv(os.Args[2])
 			printout()
+		} else if os.Args[1] == "-c" {
+			// grep -c string stdin
+			readstdin()
+			noarg(os.Args[2])
+			fmt.Println(len(output))
 		} else {
 			// grep string file
 			readfile(2)
-			sub = os.Args[1]
-			noarg(sub)
+			noarg(os.Args[1])
 			printout()
 		}
 	} else if alen == 4 {
 		// grep -i string file
-		if os.Args[1] == "i" {
+		if os.Args[1] == "-i" {
 			readfile(3)
-			sub = os.Args[2]
-			fmt.Println(sub) // <--- DOESNT WORK HERE!!!!
-			argi(sub)
+			argi(os.Args[2])
 			printout()
-		} else if os.Args[1] == "v" {
-
-		} else if os.Args[1] == "c" {
-
+		} else if os.Args[1] == "-v" {
+			readfile(3)
+			argv(os.Args[2])
+			printout()
+		} else if os.Args[1] == "-c" {
+			readfile(3)
+			noarg(os.Args[2])
+			fmt.Println(len(output))
 		} else {
-			//something error
+			//usage error
+			fmt.Printf("%v: invalid option -- %v\n", os.Args[0], os.Args[1])
 		}
 	}
 }
@@ -71,7 +75,7 @@ func readstdin() {
 func readfile(f int) {
 	in, err := os.ReadFile(os.Args[f])
 	if err != nil {
-		fmt.Printf("Error comes here\n")
+		fmt.Printf("%v: %v: No such file or directory\n", os.Args[0], os.Args[f])
 	}
 	input = strings.Split(string(in), "\n")
 }
@@ -106,8 +110,4 @@ func argv(s string) {
 			output = append(output, v)
 		}
 	}
-}
-
-func argc() {
-
 }
