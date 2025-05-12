@@ -8,7 +8,7 @@ import (
 
 var used map[string]int
 var cards []string
-var users []int
+var players []int
 
 func main() {
 
@@ -38,13 +38,29 @@ func main() {
 	fmt.Println(used)
 
 	for i := 0; i < 2; i++ {
-		users = append(users, 0)
+		players = append(players, 0)
 	}
 
 	// start game
-	users[rand.Intn(2)] = 1
+	players[rand.Intn(2)] = 1
+	fmt.Println(players)
+	nextPlayer()
+	fmt.Println(players)
 }
 
 func pullCard() int {
 	return rand.Intn(len(cards))
+}
+
+func nextPlayer() {
+
+	for i := range players {
+		if i == len(players)-1 {
+			players[i] = 0
+			players[0] = 1
+		} else if players[i] == 1 {
+			players[i] = 0
+			players[i+1] = 1
+		}
+	}
 }
