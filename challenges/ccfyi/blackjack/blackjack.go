@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -37,7 +39,15 @@ func main() {
 	used[cards[c]]++
 	fmt.Println(used)
 
-	players = 2
+	fmt.Print("How many players? (max 7): ")
+	reader := bufio.NewReader(os.Stdin)
+	char, _, err := reader.ReadRune()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	players = int(char)
+	fmt.Println(players)
 
 	// start game
 	cplayer = rand.Intn(players) + 1
@@ -52,4 +62,9 @@ func pullCard() int {
 }
 
 func nextPlayer() {
+	if cplayer == players {
+		cplayer = 1
+	} else {
+		cplayer++
+	}
 }
