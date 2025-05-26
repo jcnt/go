@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"strconv"
 	"time"
 )
 
 var used map[string]int
+var playerdb []map[string]int
 var cards []string
 var players, cplayer int
 
@@ -46,15 +48,30 @@ func main() {
 		fmt.Println(err)
 	}
 
-	players = int(char)
-	fmt.Println(players)
+	// Fix this part, need a simple stdin -> int conversion
+	temp := string(char)
+	fmt.Println("temp: ", temp)
+	players, err = strconv.Atoi(temp)
+	fmt.Println("players: ", players)
+	// fix this part
 
 	// start game
 	cplayer = rand.Intn(players) + 1
-	fmt.Println(players)
-	fmt.Println(cplayer)
+	for i := 0; i < cplayer; i++ {
+		playerdb = append(playerdb, map[string]int{"q": 0})
+	}
+	fmt.Println(playerdb)
+	fmt.Println("cplayer: ", cplayer)
+	fmt.Println(playerdb[cplayer-1])
+	//	playerdb[cplayer]map{"q": 1;}
 	nextPlayer()
-	fmt.Println(cplayer)
+	fmt.Println("cplayer: ", cplayer)
+	nextPlayer()
+	fmt.Println("cplayer: ", cplayer)
+	nextPlayer()
+	fmt.Println("cplayer: ", cplayer)
+	nextPlayer()
+	fmt.Println("cplayer: ", cplayer)
 }
 
 func pullCard() int {
