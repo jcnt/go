@@ -1,11 +1,9 @@
+// first attempt to blackjack. don't expect anything pretty, trying to get it working
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"math/rand"
-	"os"
-	"strconv"
 	"time"
 )
 
@@ -42,22 +40,15 @@ func main() {
 	fmt.Println(used)
 
 	fmt.Print("How many players? (max 7): ")
-	reader := bufio.NewReader(os.Stdin)
-	char, _, err := reader.ReadRune()
-	if err != nil {
-		fmt.Println(err)
+	if _, err := fmt.Scan(&players); err != nil {
+		fmt.Println("read failed")
+		return
 	}
-
-	// Fix this part, need a simple stdin -> int conversion
-	temp := string(char)
-	fmt.Println("temp: ", temp)
-	players, err = strconv.Atoi(temp)
 	fmt.Println("players: ", players)
-	// fix this part
 
 	// start game
 	cplayer = rand.Intn(players) + 1
-	for i := 0; i < cplayer; i++ {
+	for i := 0; i < players; i++ {
 		playerdb = append(playerdb, map[string]int{"q": 0})
 	}
 	fmt.Println(playerdb)
@@ -72,6 +63,8 @@ func main() {
 	fmt.Println("cplayer: ", cplayer)
 	nextPlayer()
 	fmt.Println("cplayer: ", cplayer)
+	playerdb[cplayer-1]["q"]++
+	fmt.Println(playerdb)
 }
 
 func pullCard() int {
