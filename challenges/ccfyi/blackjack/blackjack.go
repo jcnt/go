@@ -34,24 +34,30 @@ func main() {
 	}
 
 	fmt.Println("\nWelcom to Black Jack! \n")
-	c := pullCard()
-	fmt.Println(cards[c])
-	used[cards[c]]++
-	fmt.Println(used)
 
 	fmt.Print("How many players? (max 7): ")
 	if _, err := fmt.Scan(&players); err != nil {
 		fmt.Println("read failed")
 		return
 	}
-	fmt.Println("players: ", players)
-
-	// start game
+	fmt.Printf("There are %v players in this game. Let's go!\n", players)
 	cplayer = rand.Intn(players) + 1
 	for i := 0; i < players; i++ {
 		playerdb = append(playerdb, map[string]int{"q": 0})
 	}
+
+	for i := 0; i < players; i++ {
+		c := pullCard()
+		used[c]++
+		playerdb[i][c]++
+	}
+
+	fmt.Println("new.....")
+	fmt.Println(used)
 	fmt.Println(playerdb)
+
+	fmt.Println(playerdb)
+	fmt.Println(len(playerdb))
 	fmt.Println("cplayer: ", cplayer)
 	fmt.Println(playerdb[cplayer-1])
 	//	playerdb[cplayer]map{"q": 1;}
@@ -67,7 +73,7 @@ func main() {
 	fmt.Println(playerdb)
 }
 
-func pullCard() int {
+func pullCard() string {
 	return rand.Intn(len(cards))
 }
 
@@ -78,3 +84,15 @@ func nextPlayer() {
 		cplayer++
 	}
 }
+
+// gameflow
+// welcome message
+// ask for number of players
+// distibute cards (pullCard 2x for every player)
+// mark who is starting the game
+// loop:
+// - print current player
+// - ask if more card
+// - pull card
+// - check if that card is gone full (all 4 is on the table)
+// - check if there's a 21
