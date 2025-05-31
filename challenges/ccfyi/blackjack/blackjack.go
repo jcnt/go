@@ -11,6 +11,7 @@ var used map[string]int
 var playerdb []map[string]int
 var cards []string
 var players, cplayer int
+var newcard string
 
 func main() {
 
@@ -46,35 +47,73 @@ func main() {
 		playerdb = append(playerdb, map[string]int{"q": 0})
 	}
 
-	for i := 0; i < players; i++ {
-		c := pullCard()
-		used[c]++
-		playerdb[i][c]++
+	for i := 0; i < 2; i++ {
+		for j := 0; j < players; j++ {
+			c := pullCard()
+			playerdb[j][c]++
+		}
 	}
 
+	// remove this later
 	fmt.Println("new.....")
-	fmt.Println(used)
-	fmt.Println(playerdb)
+	fmt.Println("used", used)
+	fmt.Println("players", playerdb)
+	// remove this
 
-	fmt.Println(playerdb)
-	fmt.Println(len(playerdb))
-	fmt.Println("cplayer: ", cplayer)
-	fmt.Println(playerdb[cplayer-1])
-	//	playerdb[cplayer]map{"q": 1;}
-	nextPlayer()
-	fmt.Println("cplayer: ", cplayer)
-	nextPlayer()
-	fmt.Println("cplayer: ", cplayer)
-	nextPlayer()
-	fmt.Println("cplayer: ", cplayer)
-	nextPlayer()
-	fmt.Println("cplayer: ", cplayer)
-	playerdb[cplayer-1]["q"]++
-	fmt.Println(playerdb)
+	for {
+		fmt.Println()
+		fmt.Println("Current player is: ", cplayer)
+		fmt.Println("Your current cards are: ")
+		var s int
+		for k, v := range playerdb[cplayer-1] {
+			if v > 0 {
+				fmt.Println(k, v)
+				s += v
+			}
+		}
+		fmt.Printf("You currently have %v cards in your hand\n", s)
+		csum := calcCards(playerdb[cplayer-1])
+		fmt.Println("Sum of your cards are ", csum)
+
+		fmt.Print("Do you want a card? Y/N ")
+		if _, err := fmt.Scan(&newcard); err != nil {
+			fmt.Println("read failed")
+			return
+		}
+		fmt.Println(newcard)
+
+		if newcard == "Y" {
+			c := pullCard()
+			playerdb[cplayer-1][c]++
+		}
+		fmt.Println(playerdb[cplayer-1])
+
+		s = 0
+
+		for k, v := range playerdb[cplayer-1] {
+			if v > 0 {
+				fmt.Println(k, v)
+				s += v
+			}
+		}
+		fmt.Printf("You currently have %v cards in your hand\n", s)
+		csum = calcCards(playerdb[cplayer-1])
+		fmt.Println("Sum of your cards are ", csum)
+
+		nextPlayer()
+
+	}
+
 }
 
 func pullCard() string {
-	return rand.Intn(len(cards))
+	r := rand.Intn(len(cards))
+	if used[cards[r]] < 4 {
+		used[cards[r]]++
+	} else {
+		pullCard()
+	}
+	return cards[r]
 }
 
 func nextPlayer() {
@@ -83,6 +122,42 @@ func nextPlayer() {
 	} else {
 		cplayer++
 	}
+}
+
+func calcCards(c map[string]int) int {
+	s := 0
+	for k, v := range c {
+		if k == "2" {
+			s = s + 2*v
+		} else if k == "3" {
+			s = s + 3*v
+		} else if k == "4" {
+			s = s + 4*v
+		} else if k == "5" {
+			s = s + 5*v
+		} else if k == "6" {
+			s = s + 6*v
+		} else if k == "7" {
+			s = s + 7*v
+		} else if k == "8" {
+			s = s + 8*v
+		} else if k == "9" {
+			s = s + 9*v
+		} else if k == "a" {
+			if s == 10 {
+				s += 11
+			} else {
+				s = s + 1*v
+			}
+		} else {
+			s = s + 10*v
+		}
+		//handle the ace case
+		if s == 11 && c["a"] > 0 {
+			s = 21
+		}
+	}
+	return s
 }
 
 // gameflow
@@ -96,3 +171,6 @@ func nextPlayer() {
 // - pull card
 // - check if that card is gone full (all 4 is on the table)
 // - check if there's a 21
+
+// todo
+// - handle double aces
