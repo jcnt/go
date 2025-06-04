@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 	"time"
 )
 
@@ -15,6 +16,8 @@ var newcard string
 
 func main() {
 
+	played := map[int]int{}
+	scores := map[int]int{}
 	cards = append(cards, "2", "3", "4", "5", "6", "7", "8", "9", "j", "q", "k", "a")
 	rand.NewSource(time.Now().UnixNano())
 
@@ -41,18 +44,28 @@ func main() {
 		fmt.Println("read failed")
 		return
 	}
-	fmt.Printf("There are %v players in this game. Let's go!\n", players)
+	fmt.Printf("There are %v players in this game. Let's go!\n\n", players)
 	cplayer = rand.Intn(players) + 1
-	for i := 0; i < players; i++ {
+	for i := 0; i <= players; i++ {
 		playerdb = append(playerdb, map[string]int{"q": 0})
 	}
 
 	for i := 0; i < 2; i++ {
-		for j := 0; j < players; j++ {
+		for j := 1; j < players+1; j++ {
 			c := pullCard()
 			playerdb[j][c]++
 		}
 	}
+
+	//dealer
+	var d int
+	for d = 0; d < 17; {
+		c := pullCard()
+		playerdb[0][c]++
+		d = calcCards(playerdb[0])
+	}
+	fmt.Println("Dealer: ", d)
+	scores[0] = d
 
 	// remove this later
 	fmt.Println("new.....")
@@ -60,47 +73,61 @@ func main() {
 	fmt.Println("players", playerdb)
 	// remove this
 
-	for {
+	on := true
+	for on == true {
 		fmt.Println()
 		fmt.Println("Current player is: ", cplayer)
-		fmt.Println("Your current cards are: ")
-		var s int
-		for k, v := range playerdb[cplayer-1] {
-			if v > 0 {
-				fmt.Println(k, v)
-				s += v
+
+		p := true
+		for p {
+			fmt.Println("Your current cards are: ")
+			var s int
+			for k, v := range playerdb[cplayer] {
+				if v > 0 {
+					fmt.Println(k, v)
+					s += v
+				}
 			}
-		}
-		fmt.Printf("You currently have %v cards in your hand\n", s)
-		csum := calcCards(playerdb[cplayer-1])
-		fmt.Println("Sum of your cards are ", csum)
 
-		fmt.Print("Do you want a card? Y/N ")
-		if _, err := fmt.Scan(&newcard); err != nil {
-			fmt.Println("read failed")
-			return
-		}
-		fmt.Println(newcard)
+			fmt.Printf("You currently have %v cards in your hand\n", s)
+			csum := calcCards(playerdb[cplayer])
+			fmt.Println("Sum of your cards are ", csum)
 
-		if newcard == "Y" {
-			c := pullCard()
-			playerdb[cplayer-1][c]++
-		}
-		fmt.Println(playerdb[cplayer-1])
-
-		s = 0
-
-		for k, v := range playerdb[cplayer-1] {
-			if v > 0 {
-				fmt.Println(k, v)
-				s += v
+			fmt.Print("Do you want a card? Y/N ")
+			if _, err := fmt.Scan(&newcard); err != nil {
+				fmt.Println("read failed")
+				return
 			}
-		}
-		fmt.Printf("You currently have %v cards in your hand\n", s)
-		csum = calcCards(playerdb[cplayer-1])
-		fmt.Println("Sum of your cards are ", csum)
+			fmt.Println(newcard)
 
+			if newcard == "Y" {
+				c := pullCard()
+				playerdb[cplayer][c]++
+			} else {
+				p = false
+				scores[cplayer] = csum
+			}
+			fmt.Println(playerdb[cplayer])
+		}
+
+		played[cplayer] = 1
 		nextPlayer()
+
+		if played[cplayer] == 1 {
+			on = false
+		}
+
+	}
+
+	fmt.Println(strings.Repeat("-", 40))
+	fmt.Println("Summary of the game")
+
+	winner := 0
+	for _, v := range scores {
+		fmt.Println(scores)
+		if v <= 21 && v > winner {
+			winner = v
+		}
 
 	}
 
@@ -160,17 +187,7 @@ func calcCards(c map[string]int) int {
 	return s
 }
 
-// gameflow
-// welcome message
-// ask for number of players
-// distibute cards (pullCard 2x for every player)
-// mark who is starting the game
-// loop:
-// - print current player
-// - ask if more card
-// - pull card
-// - check if that card is gone full (all 4 is on the table)
-// - check if there's a 21
-
 // todo
 // - handle double aces
+// - check if that card is gone full (all 4 is on the table)
+// - accept y Y but nothing else
