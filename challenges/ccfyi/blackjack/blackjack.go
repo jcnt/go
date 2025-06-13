@@ -37,7 +37,7 @@ func main() {
 		"a":  0,
 	}
 
-	fmt.Println("\nWelcom to Black Jack! \n")
+	fmt.Println("\nWelcome to Black Jack! \n")
 
 	fmt.Print("How many players? (max 7): ")
 	if _, err := fmt.Scan(&players); err != nil {
@@ -64,14 +64,8 @@ func main() {
 		playerdb[0][c]++
 		d = calcCards(playerdb[0])
 	}
-	fmt.Println("Dealer: ", d)
+	fmt.Println("Dealer's score: ", d)
 	scores[0] = d
-
-	// remove this later
-	fmt.Println("new.....")
-	fmt.Println("used", used)
-	fmt.Println("players", playerdb)
-	// remove this
 
 	on := true
 	for on == true {
@@ -98,7 +92,6 @@ func main() {
 				fmt.Println("read failed")
 				return
 			}
-			fmt.Println(newcard)
 
 			if newcard == "Y" {
 				c := pullCard()
@@ -107,7 +100,6 @@ func main() {
 				p = false
 				scores[cplayer] = csum
 			}
-			fmt.Println(playerdb[cplayer])
 		}
 
 		played[cplayer] = 1
@@ -119,17 +111,25 @@ func main() {
 
 	}
 
+	fmt.Println()
 	fmt.Println(strings.Repeat("-", 40))
 	fmt.Println("Summary of the game")
+	fmt.Println(strings.Repeat("-", 40))
+	fmt.Println()
 
 	winner := 0
-	for _, v := range scores {
-		fmt.Println(scores)
+	for i, v := range scores {
 		if v <= 21 && v > winner {
-			winner = v
+			winner = i
 		}
 
 	}
+
+	for k, v := range scores {
+		fmt.Printf("Player %v: %v\n", k, v)
+	}
+	fmt.Println()
+	fmt.Println("winner is player", winner, "with sum of", scores[winner])
 
 }
 
@@ -188,6 +188,7 @@ func calcCards(c map[string]int) int {
 }
 
 // todo
+// - you have to pull card if...
 // - handle double aces
 // - check if that card is gone full (all 4 is on the table)
 // - accept y Y but nothing else
