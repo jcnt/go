@@ -41,7 +41,7 @@ func main() {
 
 	fmt.Print("How many players? (max 7): ")
 	if _, err := fmt.Scan(&players); err != nil {
-		fmt.Println("read failed")
+		fmt.Println("Invalid response")
 		return
 	}
 	fmt.Printf("There are %v players in this game. Let's go!\n\n", players)
@@ -64,7 +64,7 @@ func main() {
 		playerdb[0][c]++
 		d = calcCards(playerdb[0])
 	}
-	fmt.Println("Dealer's score: ", d)
+	//	fmt.Println("Dealer's score: ", d)
 	scores[0] = d
 
 	on := true
@@ -89,16 +89,24 @@ func main() {
 
 			fmt.Print("Do you want a card? Y/N ")
 			if _, err := fmt.Scan(&newcard); err != nil {
-				fmt.Println("read failed")
-				return
+				fmt.Println("Invalid response")
+				//				return
 			}
 
-			if newcard == "Y" {
+			if strings.ToUpper(newcard) == "Y" {
 				c := pullCard()
 				playerdb[cplayer][c]++
-			} else {
+			} else if strings.ToUpper(newcard) == "N" {
 				p = false
 				scores[cplayer] = csum
+			}
+
+			csum = calcCards(playerdb[cplayer])
+			if csum >= 21 {
+				p = false
+				scores[cplayer] = csum
+				fmt.Println("Sum of your cards are ", csum)
+				fmt.Println("No more cards for you")
 			}
 		}
 
@@ -125,11 +133,19 @@ func main() {
 
 	}
 
+	fmt.Println("=Dealer=:", scores[0])
 	for k, v := range scores {
-		fmt.Printf("Player %v: %v\n", k, v)
+		if k == 0 {
+		} else {
+			fmt.Printf("Player %v: %v\n", k, v)
+		}
 	}
 	fmt.Println()
-	fmt.Println("winner is player", winner, "with sum of", scores[winner])
+	if winner == 0 {
+		fmt.Println("winner is the dealer with sum of", scores[winner])
+	} else {
+		fmt.Println("winner is player", winner, "with sum of", scores[winner])
+	}
 
 }
 
