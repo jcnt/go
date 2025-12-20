@@ -8,6 +8,7 @@ import (
 )
 
 var input []string
+var args []string
 
 func main() {
 
@@ -19,12 +20,15 @@ func main() {
 		_, err := os.Stat(os.Args[len(os.Args)-1])
 		if err != nil {
 			readstdin()
+			args = os.Args[1:]
 		} else {
 			readfile(os.Args[len(os.Args)-1])
+			args = os.Args[1 : len(os.Args)-1]
 		}
 	}
 
-	fmt.Println(input)
+	fmt.Printf("%#v", input)
+	fmt.Println(args)
 }
 
 func readstdin() {
