@@ -26,9 +26,9 @@ func main() {
 		for i := start; i <= end; i++ {
 			//			fmt.Println(i)
 			s := strconv.Itoa(i)
-			fmt.Println(s)
+			//			fmt.Println(s)
 			l := strings.Split(s, "")
-			fmt.Println(l)
+			///			fmt.Println(l)
 			for j := 2; j <= 10; j++ {
 				var fin [][]string
 				if len(l)%j == 0 {
@@ -38,12 +38,12 @@ func main() {
 					for k := 0; k < len(l); k += nsl {
 						fin = append(fin, l[k:k+nsl])
 					}
-					fmt.Println(fin)
+					//					fmt.Println(fin)
 					for m := 1; m < len(fin); m++ {
 						eq = eq && slices.Equal(fin[0], fin[m])
 					}
 					if eq == true {
-						fmt.Println(eq)
+						//						fmt.Println(eq)
 						counter[s]++
 					}
 				}
