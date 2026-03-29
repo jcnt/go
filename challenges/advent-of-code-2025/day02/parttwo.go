@@ -11,7 +11,7 @@ import (
 func main() {
 
 	var input []string
-	in, err := os.ReadFile("input")
+	in, err := os.ReadFile("example")
 	if err != nil {
 		print("failed")
 	}
@@ -24,9 +24,9 @@ func main() {
 		start, _ := strconv.Atoi(a[0])
 		end, _ := strconv.Atoi(a[1])
 		for i := start; i <= end; i++ {
-			//			fmt.Println(i)
+			//	fmt.Println(i, "i")
 			s := strconv.Itoa(i)
-			//			fmt.Println(s)
+			// fmt.Println(s, "s")
 			l := strings.Split(s, "")
 			///			fmt.Println(l)
 			for j := 2; j <= 10; j++ {
