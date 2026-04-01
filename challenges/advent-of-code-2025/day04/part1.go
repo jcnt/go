@@ -13,7 +13,7 @@ func main() {
 	var rolls [][]string
 	var answer int
 
-	in, err := os.ReadFile("example")
+	in, err := os.ReadFile("input")
 	if err != nil {
 		print("failed to open input")
 	}
@@ -28,14 +28,12 @@ func main() {
 		mlen := len(rolls)
 		for item := range rolls[row] {
 			if rolls[row][item] == "@" {
-				fmt.Println("yes")
+				//				fmt.Println("yes")
 				counter := 0
 				for r := row - 1; r < row+2; r++ {
 					for c := item - 1; c < item+2; c++ {
-						if r > 0 && r < mlen && c > 0 && c < mlen {
-							if r == row && c == item {
-								fmt.Println("this is me")
-							} else {
+						if r >= 0 && r < mlen && c >= 0 && c < mlen {
+							if r != row || c != item {
 								if rolls[r][c] == "@" {
 									counter++
 								}
