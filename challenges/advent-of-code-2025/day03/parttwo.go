@@ -16,7 +16,7 @@ func main() {
 	var counter int
 	in, err := os.ReadFile("input")
 	if err != nil {
-		print("failed")
+		fmt.Println("failed")
 	}
 	input = strings.Split(string(in), "\n")
 	input = input[0 : len(input)-1] // remove last empty column
