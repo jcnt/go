@@ -19,13 +19,12 @@ func main() {
 	var fresh, sfresh []fresh_range
 	var answer int
 
-	in, err := os.ReadFile("example")
+	in, err := os.ReadFile("input")
 	if err != nil {
 		fmt.Println("failed to open file")
 	}
 
 	input := strings.Split(string(in), "\n")
-	//	fmt.Println("input", input, "input")
 
 	for _, v := range input {
 		if strings.Contains(v, "-") {
@@ -39,39 +38,39 @@ func main() {
 		}
 	}
 
-	fmt.Println(fresh)
-	fmt.Println(sfresh)
+	for len(fresh) > 0 {
+		ix := 0
+		for i := range fresh {
+			if fresh[i].s <= fresh[ix].s {
+				ix = i
+			}
+		}
+		sfresh = append(sfresh, fresh[ix])
+		fresh = slices.Delete(fresh, ix, ix+1)
+	}
 
 	changed := true
 	for changed {
 		changed = false
-		for i := 0; i < len(fresh)-1; i++ {
-			cfr := fresh[i]
-			nfr := fresh[i+1]
-			//fmt.Println("comparing ", cfr, nfr)
-			if cfr.s < nfr.s && cfr.e >= nfr.s {
-				//fmt.Println("comparing", cfr.s, nfr.s, "and", cfr.e, nfr.e)
-				fresh[i+1].s = cfr.s
+		for i := 0; i < len(sfresh)-1; i++ {
+			cfr := sfresh[i]
+			nfr := sfresh[i+1]
+			if cfr.s <= nfr.s && cfr.e >= nfr.s {
+				sfresh[i+1].s = cfr.s
 				if cfr.e > nfr.e {
-					fresh[i+1].e = cfr.e
+					sfresh[i+1].e = cfr.e
 				}
 				changed = true
-				fresh = slices.Delete(fresh, i, i+1)
-				//fmt.Println("current fresh: ", fresh)
+				sfresh = slices.Delete(sfresh, i, i+1)
 			} else if cfr.s >= nfr.s && cfr.s <= nfr.e && cfr.e > nfr.e {
-				//fmt.Println("comparing 2", cfr.s, nfr.s, "and", cfr.e, nfr.e)
-				fresh[i+1].e = cfr.e
-				//fmt.Println("after change", nfr.e, cfr.e)
+				sfresh[i+1].e = cfr.e
 				changed = true
-				fresh = slices.Delete(fresh, i, i+1)
-				//fmt.Println("current fresh: ", fresh)
+				sfresh = slices.Delete(sfresh, i, i+1)
 			}
 		}
 	}
 
-	fmt.Println(fresh)
-
-	for _, r := range fresh {
+	for _, r := range sfresh {
 		count := r.e - r.s + 1
 		answer += count
 	}
