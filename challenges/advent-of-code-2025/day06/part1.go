@@ -21,11 +21,10 @@ func main() {
 
 	for _, v := range input {
 		a := strings.Split(v, " ")
-		l := []int{}
+		l := []string{}
 		for _, w := range a {
-			s, err := strconv.Atoi(w)
-			if err == nil {
-				l = append(l, s)
+			if w != " " {
+				l = append(l, w)
 			}
 		}
 		for _, x := range l {
