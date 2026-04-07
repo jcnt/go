@@ -53,6 +53,5 @@ func main() {
 		fmt.Println(subcounti)
 		counter += subcounti
 	}
-	fmt.Println(counter)
 
 }
