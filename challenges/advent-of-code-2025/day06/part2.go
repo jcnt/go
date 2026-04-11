@@ -5,6 +5,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -13,7 +14,7 @@ func main() {
 	source := [][]string{}
 	final := 0
 
-	in, err := os.ReadFile("example")
+	in, err := os.ReadFile("input")
 	if err != nil {
 		fmt.Println("unable to open file")
 	}
@@ -25,13 +26,8 @@ func main() {
 		source = append(source, a)
 	}
 
-	for _, v := range source {
-		fmt.Printf("%+q\n", v)
-	}
-
 	o := ""
 	l := []string{}
-	//f := [][]string{}
 	for i := len(source[0]) - 1; i >= 0; i-- {
 		s := ""
 		turn := false
@@ -48,29 +44,31 @@ func main() {
 		} else if turn {
 			l = append(l, s)
 			l = append(l, o)
-			fmt.Printf("%+q\n", l)
-			fmt.Println(l[0:len(l)-1], l[len(l)-1:])
-			//do_math(l[0:len(l)-1], l[len(l)-1:])
+			final += do_math(l)
 			l = []string{}
 		}
 		//fmt.Printf("%+q\n", l)
 	}
 
 	fmt.Println("final answer is", final)
-	te := "   "
-	fmt.Printf("%+q\n", strings.TrimSpace(te))
 }
 
-func do_math(l []int, o string) int {
+func do_math(l []string) int {
 	sum := 0
-	for _, v := range l {
-		if o == "+" {
-			sum += v
-		} else if o == "*" {
-			if sum == 0 {
-				sum += v
-			} else {
-				sum *= v
+	o := l[len(l)-1:][0]  // last item
+	tl := l[0 : len(l)-1] // all items minus last
+	for _, v := range tl {
+		tv := strings.TrimSpace(v)
+		if tv != "" {
+			fv, _ := strconv.Atoi(tv)
+			if o == "+" {
+				sum += fv
+			} else if o == "*" {
+				if sum == 0 {
+					sum += fv
+				} else {
+					sum *= fv
+				}
 			}
 		}
 	}
