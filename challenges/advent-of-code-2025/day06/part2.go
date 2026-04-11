@@ -57,6 +57,8 @@ func main() {
 	}
 
 	fmt.Println("final answer is", final)
+	te := "   "
+	fmt.Printf("%+q\n", strings.TrimSpace(te))
 }
 
 func do_math(l []int, o string) int {
