@@ -6,11 +6,22 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"slices"
+	"sort"
 	"strconv"
 	"strings"
 )
 
 func main() {
+
+	type dist struct {
+		a int
+		b int
+		d float64
+	}
+
+	dist_db := []dist{}
+	conn := [][]int{}
 
 	in, err := os.ReadFile("example")
 	if err != nil {
@@ -18,11 +29,24 @@ func main() {
 	}
 	input := strings.Split(string(in), "\n")
 	input = input[0 : len(input)-1]
-	fmt.Printf("%q\n", input)
+	//fmt.Printf("%q\n", input)
 
 	for i := range input {
 		for j := i + 1; j < len(input); j++ {
-			get_distance(input[i], input[j])
+			var tdb dist
+			tdb.a = i
+			tdb.b = j
+			tdb.d = get_distance(input[i], input[j])
+			dist_db = append(dist_db, tdb)
+		}
+	}
+	sort.Slice(dist_db, func(i, j int) bool { return dist_db[i].d < dist_db[j].d })
+	fmt.Println(dist_db)
+
+	for i := 0; i < 10; i++ {
+		for j := range conn {
+			if slices.Contains(conn[j], dist_db[i].a) {
+			}
 		}
 	}
 }
@@ -40,6 +64,5 @@ func get_distance(a string, b string) float64 {
 		ilb = append(ilb, float64(t))
 	}
 	sq := math.Sqrt(math.Pow(ila[0]-ilb[0], 2) + math.Pow(ila[1]-ilb[1], 2) + math.Pow(ila[2]-ilb[2], 2))
-	fmt.Println(sq)
-	return 0
+	return sq
 }
