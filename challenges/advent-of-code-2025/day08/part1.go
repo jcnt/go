@@ -45,13 +45,17 @@ func main() {
 
 	for i := 0; i < 10; i++ {
 		for j := range conn {
+			ctemp := []int{}
+			fmt.Println("pre if")
 			if slices.Contains(conn[j], dist_db[i].a) {
 				conn[j] = append(conn[j], dist_db[i].b)
 			} else if slices.Contains(conn[j], dist_db[i].a) {
 				conn[j] = append(conn[j], dist_db[i].a)
 			} else {
-				conn[len(conn)] = append(conn[len(conn)], dist_db[i].a)
-				conn[len(conn)] = append(conn[len(conn)], dist_db[i].b)
+				ctemp = append(ctemp, dist_db[i].a)
+				ctemp = append(ctemp, dist_db[i].b)
+				conn = append(conn, ctemp)
+				fmt.Println("were ctemp", ctemp, conn)
 			}
 		}
 	}
