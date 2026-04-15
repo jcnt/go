@@ -46,9 +46,16 @@ func main() {
 	for i := 0; i < 10; i++ {
 		for j := range conn {
 			if slices.Contains(conn[j], dist_db[i].a) {
+				conn[j] = append(conn[j], dist_db[i].b)
+			} else if slices.Contains(conn[j], dist_db[i].a) {
+				conn[j] = append(conn[j], dist_db[i].a)
+			} else {
+				conn[len(conn)] = append(conn[len(conn)], dist_db[i].a)
+				conn[len(conn)] = append(conn[len(conn)], dist_db[i].b)
 			}
 		}
 	}
+	fmt.Println(conn)
 }
 
 func get_distance(a string, b string) float64 {
