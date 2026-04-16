@@ -41,22 +41,20 @@ func main() {
 		}
 	}
 	sort.Slice(dist_db, func(i, j int) bool { return dist_db[i].d < dist_db[j].d })
-	fmt.Println(dist_db)
+	//fmt.Println(dist_db)
 
-	for i := 0; i < 10; i++ {
+	conn = append(conn, []int{dist_db[0].a, dist_db[0].b})
+
+	for i := 1; i < 10; i++ {
 		for j := range conn {
-			ctemp := []int{}
-			fmt.Println("pre if")
-			if slices.Contains(conn[j], dist_db[i].a) {
+			if slices.Contains(conn[j], dist_db[i].a) && slices.Contains(conn[j], dist_db[i].b) == false {
 				conn[j] = append(conn[j], dist_db[i].b)
-			} else if slices.Contains(conn[j], dist_db[i].a) {
+			} else if slices.Contains(conn[j], dist_db[i].b) && slices.Contains(conn[j], dist_db[i].a) == false {
 				conn[j] = append(conn[j], dist_db[i].a)
-			} else {
-				ctemp = append(ctemp, dist_db[i].a)
-				ctemp = append(ctemp, dist_db[i].b)
-				conn = append(conn, ctemp)
-				fmt.Println("were ctemp", ctemp, conn)
+			} else if slices.Contains(conn[j], dist_db[i].a) == false && slices.Contains(conn[j], dist_db[i].b) == false {
+				conn = append(conn, []int{dist_db[i].a, dist_db[i].b})
 			}
+			fmt.Println("conn is: ", conn)
 		}
 	}
 	fmt.Println(conn)
