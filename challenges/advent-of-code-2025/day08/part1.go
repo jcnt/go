@@ -22,6 +22,7 @@ func main() {
 
 	dist_db := []dist{}
 	conn := [][]int{}
+	boxlist := []int{}
 
 	in, err := os.ReadFile("example")
 	if err != nil {
@@ -42,29 +43,31 @@ func main() {
 	}
 	sort.Slice(dist_db, func(i, j int) bool { return dist_db[i].d < dist_db[j].d })
 	conn = append(conn, []int{dist_db[0].a, dist_db[0].b})
+	boxlist = append(boxlist, dist_db[0].a, dist_db[0].b)
 
 	for i := 1; i < 10; i++ {
-		changed := false
-		for j := range conn {
-			if changed != true {
-				fmt.Println("current run is: ", dist_db[i])
+		fmt.Println("current run is: ", dist_db[i])
+		if slices.Contains(boxlist, dist_db[i].a) || slices.Contains(boxlist, dist_db[i].b) {
+			for j := range conn {
 				fmt.Println("conn j is: ", conn[j])
+				fmt.Println("boxlist is: ", boxlist)
 				if slices.Contains(conn[j], dist_db[i].a) && slices.Contains(conn[j], dist_db[i].b) == false {
 					conn[j] = append(conn[j], dist_db[i].b)
-					changed = true
+					boxlist = append(boxlist, dist_db[i].b)
+					fmt.Println("boxlist is: ", boxlist)
 				} else if slices.Contains(conn[j], dist_db[i].b) && slices.Contains(conn[j], dist_db[i].a) == false {
 					conn[j] = append(conn[j], dist_db[i].a)
-					changed = true
-				} else if slices.Contains(conn[j], dist_db[i].b) && slices.Contains(conn[j], dist_db[i].a) {
-					changed = true
-				} else if slices.Contains(conn[j], dist_db[i].a) == false && slices.Contains(conn[j], dist_db[i].b) == false {
-					conn = append(conn, []int{dist_db[i].a, dist_db[i].b})
-					changed = true
+					boxlist = append(boxlist, dist_db[i].a)
+					fmt.Println("boxlist is: ", boxlist)
 				}
 			}
-			fmt.Println("conn is: ", conn)
+		} else {
+			conn = append(conn, []int{dist_db[i].a, dist_db[i].b})
+			boxlist = append(boxlist, dist_db[i].a, dist_db[i].b)
 		}
+		fmt.Println("conn is: ", conn)
 	}
+
 	fmt.Println(conn)
 }
 
