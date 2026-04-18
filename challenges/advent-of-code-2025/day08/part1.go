@@ -23,8 +23,10 @@ func main() {
 	dist_db := []dist{}
 	conn := [][]int{}
 	boxlist := []int{}
+	answer := 1
+	slen := []int{}
 
-	in, err := os.ReadFile("example")
+	in, err := os.ReadFile("input")
 	if err != nil {
 		fmt.Println("unable to open file")
 	}
@@ -45,30 +47,57 @@ func main() {
 	conn = append(conn, []int{dist_db[0].a, dist_db[0].b})
 	boxlist = append(boxlist, dist_db[0].a, dist_db[0].b)
 
-	for i := 1; i < 10; i++ {
-		fmt.Println("current run is: ", dist_db[i])
-		if slices.Contains(boxlist, dist_db[i].a) || slices.Contains(boxlist, dist_db[i].b) {
+	for i := 1; i < 1000; i++ {
+		//fmt.Println("current run is: ", dist_db[i])
+		if slices.Contains(boxlist, dist_db[i].a) && slices.Contains(boxlist, dist_db[i].b) {
+			var a, b int
 			for j := range conn {
-				fmt.Println("conn j is: ", conn[j])
-				fmt.Println("boxlist is: ", boxlist)
+				if slices.Contains(conn[j], dist_db[i].a) {
+					a = j
+				}
+				if slices.Contains(conn[j], dist_db[i].b) {
+					b = j
+				}
+			}
+			if a > b {
+				conn[b] = append(conn[b], conn[a]...)
+				conn = slices.Delete(conn, a, a+1)
+				//fmt.Println(conn)
+			} else if b > a {
+				conn[a] = append(conn[a], conn[b]...)
+				conn = slices.Delete(conn, b, b+1)
+				//fmt.Println(conn)
+			}
+		} else if slices.Contains(boxlist, dist_db[i].a) || slices.Contains(boxlist, dist_db[i].b) {
+			for j := range conn {
+				//fmt.Println("boxlist is: ", boxlist)
 				if slices.Contains(conn[j], dist_db[i].a) && slices.Contains(conn[j], dist_db[i].b) == false {
 					conn[j] = append(conn[j], dist_db[i].b)
 					boxlist = append(boxlist, dist_db[i].b)
-					fmt.Println("boxlist is: ", boxlist)
+					//fmt.Println("boxlist is: ", boxlist)
 				} else if slices.Contains(conn[j], dist_db[i].b) && slices.Contains(conn[j], dist_db[i].a) == false {
 					conn[j] = append(conn[j], dist_db[i].a)
 					boxlist = append(boxlist, dist_db[i].a)
-					fmt.Println("boxlist is: ", boxlist)
+					//fmt.Println("boxlist is: ", boxlist)
 				}
 			}
 		} else {
 			conn = append(conn, []int{dist_db[i].a, dist_db[i].b})
 			boxlist = append(boxlist, dist_db[i].a, dist_db[i].b)
+			//fmt.Println("boxlist is: ", boxlist)
 		}
-		fmt.Println("conn is: ", conn)
+		//fmt.Println("conn is: ", conn)
 	}
 
-	fmt.Println(conn)
+	for _, v := range conn {
+		slen = append(slen, len(v))
+	}
+	sort.Slice(slen, func(i, j int) bool { return slen[i] > slen[j] })
+
+	for i := 0; i < 3; i++ {
+		answer *= slen[i]
+	}
+	fmt.Println("Answer is: ", answer)
 }
 
 func get_distance(a string, b string) float64 {
