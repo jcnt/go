@@ -27,10 +27,12 @@ func main() {
 }
 
 func get_area(a, b string) int {
-	a1, _ := strconv.Atoi(strings.Split(a, ",")[0])
-	a2, _ := strconv.Atoi(strings.Split(a, ",")[1])
-	b1, _ := strconv.Atoi(strings.Split(b, ",")[0])
-	b2, _ := strconv.Atoi(strings.Split(b, ",")[1])
+	la := strings.Split(a, ",")
+	lb := strings.Split(b, ",")
+	a1, _ := strconv.Atoi(la[0])
+	a2, _ := strconv.Atoi(la[1])
+	b1, _ := strconv.Atoi(lb[0])
+	b2, _ := strconv.Atoi(lb[1])
 	t := (a1 - b1) * (a2 - b2)
 	if t < 0 {
 		return t * -1
