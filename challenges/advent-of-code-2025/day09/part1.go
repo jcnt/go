@@ -11,7 +11,9 @@ import (
 
 func main() {
 
-	in, err := os.ReadFile("example")
+	answer := 0
+
+	in, err := os.ReadFile("input")
 	if err != nil {
 		fmt.Println("unable to open file")
 	}
@@ -21,9 +23,13 @@ func main() {
 
 	for i := range input {
 		for j := i + 1; j < len(input); j++ {
-			fmt.Println(get_area(input[i], input[j]))
+			current := get_area(input[i], input[j])
+			if current > answer {
+				answer = current
+			}
 		}
 	}
+	fmt.Println("final answer is: ", answer)
 }
 
 func get_area(a, b string) int {
@@ -33,7 +39,7 @@ func get_area(a, b string) int {
 	a2, _ := strconv.Atoi(la[1])
 	b1, _ := strconv.Atoi(lb[0])
 	b2, _ := strconv.Atoi(lb[1])
-	t := (a1 - b1) * (a2 - b2)
+	t := (a1 - b1 + 1) * (a2 - b2 + 1)
 	if t < 0 {
 		return t * -1
 	} else {
