@@ -11,6 +11,7 @@ import (
 
 func main() {
 	reddb := [][]int{}
+	tiledb := [][]string{}
 	var maxx, maxy int
 	in, err := os.ReadFile("example")
 	if err != nil {
@@ -34,6 +35,20 @@ func main() {
 		}
 		reddb = append(reddb, intred)
 	}
-	fmt.Printf("%d\n", reddb)
-	fmt.Println(maxx, maxy)
+	fmt.Printf("%d\n\n", reddb)
+
+	for i := 0; i <= maxy+1; i++ {
+		tline := []string{}
+		for j := 0; j <= maxx+1; j++ {
+			tline = append(tline, ".")
+		}
+		tiledb = append(tiledb, tline)
+	}
+
+	for _, t := range reddb {
+		tiledb[t[1]][t[0]] = "#"
+	}
+	for _, v := range tiledb {
+		fmt.Printf("%q\n", v)
+	}
 }
