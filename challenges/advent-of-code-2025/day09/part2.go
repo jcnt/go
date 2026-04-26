@@ -5,6 +5,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -14,6 +15,13 @@ func main() {
 	rgdb := [][]int{}
 	tiledb := [][]string{}
 	var maxx, maxy int
+	type rect struct {
+		a int
+		b int
+		s int
+	}
+	rectdb := []rect{}
+
 	in, err := os.ReadFile("example")
 	if err != nil {
 		fmt.Println("cannot open file")
@@ -36,7 +44,7 @@ func main() {
 		}
 		reddb = append(reddb, intred)
 	}
-	fmt.Printf("%d\n\n", reddb)
+	//fmt.Printf("%d\n\n", reddb)
 
 	for i := 0; i <= maxy+1; i++ {
 		tline := []string{}
@@ -75,8 +83,6 @@ func main() {
 		}
 	}
 
-	fmt.Println(reddb)
-	fmt.Println(rgdb)
 	for _, t := range reddb {
 		tiledb[t[1]][t[0]] = "#"
 	}
@@ -84,7 +90,62 @@ func main() {
 		tiledb[t[1]][t[0]] = "#"
 	}
 
+	for i := range tiledb {
+		for j := range tiledb[i] {
+			if tiledb[i][j] == "." {
+				tiledb[i][j] = "x"
+			} else {
+				break
+			}
+		}
+		for j := len(tiledb[i]) - 1; j >= 0; j-- {
+			if tiledb[i][j] == "." {
+				tiledb[i][j] = "x"
+			} else {
+				break
+			}
+		}
+	}
+
+	for i := range tiledb[0] {
+		for j := range tiledb {
+			if tiledb[j][i] == "." {
+				tiledb[j][i] = "x"
+			} else {
+				break
+			}
+		}
+		for j := len(tiledb) - 1; j >= 0; j-- {
+			if tiledb[j][i] == "." {
+				tiledb[j][i] = "x"
+			} else {
+				break
+			}
+		}
+	}
+
 	for _, v := range tiledb {
 		fmt.Printf("%q\n", v)
+	}
+
+	for i := range reddb {
+		for j := i + 1; j < len(reddb); j++ {
+			var c rect
+			c.s = get_area(reddb[i], reddb[j])
+			c.a = i
+			c.b = j
+			rectdb = append(rectdb, c)
+		}
+	}
+	sort.Slice(rectdb, func(i, j int) bool { return rectdb[i].s > rectdb[j].s })
+	fmt.Println(rectdb)
+}
+
+func get_area(a, b []int) int {
+	t := (a[0] - b[0] + 1) * (a[1] - b[1] + 1)
+	if t < 0 {
+		return t * -1
+	} else {
+		return t
 	}
 }
