@@ -11,9 +11,9 @@ import (
 )
 
 func main() {
+	tiledb := [][]string{}
 	reddb := [][]int{}
 	rgdb := [][]int{}
-	tiledb := [][]string{}
 	var maxx, maxy int
 	type rect struct {
 		a int
@@ -140,8 +140,40 @@ func main() {
 	sort.Slice(rectdb, func(i, j int) bool { return rectdb[i].s > rectdb[j].s })
 	fmt.Println(rectdb)
 
-	for r := range rectdb {
+	for _, r := range rectdb {
+		var x0, x1, y0, y1 int
+		a0 := reddb[r.a][0]
+		a1 := reddb[r.a][1]
+		b0 := reddb[r.b][0]
+		b1 := reddb[r.b][1]
 		fmt.Println(r)
+		//fmt.Println(reddb[r.a], reddb[r.b])
+		//fmt.Println(a0, a1, b0, b1)
+		if a0 <= b0 {
+			x0 = a0
+			y0 = b0
+		} else {
+			x0 = b0
+			y0 = a0
+		}
+		if a1 <= b1 {
+			x1 = a1
+			y1 = b1
+		} else {
+			x1 = b1
+			y1 = a1
+		}
+		for i := x0; i <= y0; i++ {
+			for j := x1; j <= y1; j++ {
+				fmt.Println(tiledb[j][i])
+				if tiledb[j][i] == "x" {
+					break
+				} else {
+					fmt.Println("WINNER")
+				}
+			}
+		}
+		fmt.Println("current is", r.s)
 	}
 }
 
