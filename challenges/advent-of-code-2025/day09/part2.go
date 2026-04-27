@@ -139,6 +139,10 @@ func main() {
 	}
 	sort.Slice(rectdb, func(i, j int) bool { return rectdb[i].s > rectdb[j].s })
 	fmt.Println(rectdb)
+
+	for r := range rectdb {
+		fmt.Println(r)
+	}
 }
 
 func get_area(a, b []int) int {
