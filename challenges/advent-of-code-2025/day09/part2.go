@@ -22,7 +22,7 @@ func main() {
 	}
 	rectdb := []rect{}
 
-	in, err := os.ReadFile("example")
+	in, err := os.ReadFile("input")
 	if err != nil {
 		fmt.Println("cannot open file")
 	}
@@ -30,6 +30,7 @@ func main() {
 	input = input[0 : len(input)-1]
 	//fmt.Printf("%q\n", input)
 
+	fmt.Println("appending reddb")
 	for _, v := range input {
 		intred := []int{}
 		red := strings.Split(v, ",")
@@ -46,6 +47,7 @@ func main() {
 	}
 	//fmt.Printf("%d\n\n", reddb)
 
+	fmt.Println("appending tiledb")
 	for i := 0; i <= maxy+1; i++ {
 		tline := []string{}
 		for j := 0; j <= maxx+1; j++ {
@@ -55,6 +57,7 @@ func main() {
 	}
 	reddb = append(reddb, reddb[0])
 
+	fmt.Println("doing rgdb")
 	for i := 1; i < len(reddb); i++ {
 		c0 := reddb[i-1][0]
 		c1 := reddb[i-1][1]
@@ -83,6 +86,7 @@ func main() {
 		}
 	}
 
+	fmt.Println("doing the # fillup")
 	for _, t := range reddb {
 		tiledb[t[1]][t[0]] = "#"
 	}
@@ -90,6 +94,7 @@ func main() {
 		tiledb[t[1]][t[0]] = "#"
 	}
 
+	fmt.Println("doing the x fillup")
 	for i := range tiledb {
 		for j := range tiledb[i] {
 			if tiledb[i][j] == "." {
@@ -124,10 +129,7 @@ func main() {
 		}
 	}
 
-	for _, v := range tiledb {
-		fmt.Printf("%q\n", v)
-	}
-
+	fmt.Println("running get_area")
 	for i := range reddb {
 		for j := i + 1; j < len(reddb); j++ {
 			var c rect
@@ -140,13 +142,14 @@ func main() {
 	sort.Slice(rectdb, func(i, j int) bool { return rectdb[i].s > rectdb[j].s })
 	fmt.Println(rectdb)
 
+	fmt.Println("testing rectangles")
 	for _, r := range rectdb {
 		var x0, x1, y0, y1 int
 		a0 := reddb[r.a][0]
 		a1 := reddb[r.a][1]
 		b0 := reddb[r.b][0]
 		b1 := reddb[r.b][1]
-		fmt.Println(r)
+		//fmt.Println(r)
 		//fmt.Println(reddb[r.a], reddb[r.b])
 		//fmt.Println(a0, a1, b0, b1)
 		if a0 <= b0 {
@@ -163,15 +166,18 @@ func main() {
 			x1 = b1
 			y1 = a1
 		}
+		out := false
 		for i := x0; i <= y0; i++ {
 			for j := x1; j <= y1; j++ {
-				fmt.Println(tiledb[j][i])
+				//fmt.Println(tiledb[j][i])
 				if tiledb[j][i] == "x" {
-					break
-				} else {
-					fmt.Println("WINNER")
+					out = true
 				}
 			}
+		}
+		if out == false {
+			fmt.Println("winner is", r.s)
+			break
 		}
 		fmt.Println("current is", r.s)
 	}
