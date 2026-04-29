@@ -5,6 +5,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -45,11 +46,14 @@ func main() {
 	}
 	//fmt.Printf("%d\n\n", reddb)
 
+	fmt.Println("maxy", maxy, "maxx", maxx)
 	fmt.Println("appending tiledb")
 	tiledb := make([][]string, maxy+2, maxy+2)
+	tline := strings.Split(strings.Repeat(".", maxx+2), "")
 	for i := 0; i < maxy+2; i++ {
-		tline := strings.Split(strings.Repeat(".", maxx+2), "")
-		tiledb[i] = tline
+		tl2 := slices.Clone(tline)
+		tiledb[i] = tl2
+		fmt.Println(i)
 	}
 
 	reddb = append(reddb, reddb[0])
