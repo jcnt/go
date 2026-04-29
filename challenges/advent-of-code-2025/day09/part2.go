@@ -1,4 +1,4 @@
-// Advent of Code, 2025. Day 9, part 1.
+// Advent of Code, 2025. Day 9, part 2.
 
 package main
 
@@ -11,8 +11,6 @@ import (
 )
 
 func main() {
-	tiledb := [][]string{}
-	reddb := [][]int{}
 	rgdb := [][]int{}
 	var maxx, maxy int
 	type rect struct {
@@ -20,7 +18,6 @@ func main() {
 		b int
 		s int
 	}
-	rectdb := []rect{}
 
 	in, err := os.ReadFile("input")
 	if err != nil {
@@ -30,6 +27,7 @@ func main() {
 	input = input[0 : len(input)-1]
 	//fmt.Printf("%q\n", input)
 
+	reddb := make([][]int, 0, len(input))
 	fmt.Println("appending reddb")
 	for _, v := range input {
 		intred := []int{}
@@ -48,13 +46,12 @@ func main() {
 	//fmt.Printf("%d\n\n", reddb)
 
 	fmt.Println("appending tiledb")
-	for i := 0; i <= maxy+1; i++ {
-		tline := []string{}
-		for j := 0; j <= maxx+1; j++ {
-			tline = append(tline, ".")
-		}
-		tiledb = append(tiledb, tline)
+	tiledb := make([][]string, maxy+2, maxy+2)
+	for i := 0; i < maxy+2; i++ {
+		tline := strings.Split(strings.Repeat(".", maxx+2), "")
+		tiledb[i] = tline
 	}
+
 	reddb = append(reddb, reddb[0])
 
 	fmt.Println("doing rgdb")
@@ -129,6 +126,12 @@ func main() {
 		}
 	}
 
+	rsum := 0
+	for i := range input {
+		rsum += i + 1
+	}
+
+	rectdb := make([]rect, 0, rsum)
 	fmt.Println("running get_area")
 	for i := range reddb {
 		for j := i + 1; j < len(reddb); j++ {
