@@ -48,12 +48,14 @@ func main() {
 
 	fmt.Println("maxy", maxy, "maxx", maxx)
 	fmt.Println("appending tiledb")
-	tiledb := make([][]string, maxy+2, maxy+2)
-	tline := strings.Split(strings.Repeat(".", maxx+2), "")
+	tiledb := make([][]uint8, maxy+2, maxy+2)
+	tline := make([]uint8, maxx+2)
+	for i := range tline {
+		tline[i] = 0
+	}
 	for i := 0; i < maxy+2; i++ {
 		tl2 := slices.Clone(tline)
 		tiledb[i] = tl2
-		fmt.Println(i)
 	}
 
 	reddb = append(reddb, reddb[0])
@@ -87,26 +89,26 @@ func main() {
 		}
 	}
 
-	fmt.Println("doing the # fillup")
+	fmt.Println("doing the # -> 1 fillup")
 	for _, t := range reddb {
-		tiledb[t[1]][t[0]] = "#"
+		tiledb[t[1]][t[0]] = 1
 	}
 	for _, t := range rgdb {
-		tiledb[t[1]][t[0]] = "#"
+		tiledb[t[1]][t[0]] = 1
 	}
 
-	fmt.Println("doing the x fillup")
+	fmt.Println("doing the x -> 2 fillup")
 	for i := range tiledb {
 		for j := range tiledb[i] {
-			if tiledb[i][j] == "." {
-				tiledb[i][j] = "x"
+			if tiledb[i][j] == 0 {
+				tiledb[i][j] = 2
 			} else {
 				break
 			}
 		}
 		for j := len(tiledb[i]) - 1; j >= 0; j-- {
-			if tiledb[i][j] == "." {
-				tiledb[i][j] = "x"
+			if tiledb[i][j] == 0 {
+				tiledb[i][j] = 2
 			} else {
 				break
 			}
@@ -115,15 +117,15 @@ func main() {
 
 	for i := range tiledb[0] {
 		for j := range tiledb {
-			if tiledb[j][i] == "." {
-				tiledb[j][i] = "x"
+			if tiledb[j][i] == 0 {
+				tiledb[j][i] = 2
 			} else {
 				break
 			}
 		}
 		for j := len(tiledb) - 1; j >= 0; j-- {
-			if tiledb[j][i] == "." {
-				tiledb[j][i] = "x"
+			if tiledb[j][i] == 0 {
+				tiledb[j][i] = 2
 			} else {
 				break
 			}
@@ -174,11 +176,13 @@ func main() {
 			y1 = a1
 		}
 		out := false
+	here:
 		for i := x0; i <= y0; i++ {
 			for j := x1; j <= y1; j++ {
 				//fmt.Println(tiledb[j][i])
-				if tiledb[j][i] == "x" {
+				if tiledb[j][i] == 2 {
 					out = true
+					break here
 				}
 			}
 		}
