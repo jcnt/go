@@ -11,7 +11,9 @@ import (
 
 func main() {
 
-	in, err := os.ReadFile("example")
+	sum := 0
+
+	in, err := os.ReadFile("input")
 	if err != nil {
 		panic(err)
 	}
@@ -28,7 +30,28 @@ func main() {
 		}
 		reactor = append(reactor, t)
 	}
-	for _, v := range reactor {
-		fmt.Printf("%d\n", v)
+
+	for _, line := range reactor {
+		safe := 0
+		if line[0] > line[len(line)-1] {
+			for i := 0; i < len(line)-1; i++ {
+				if line[i]-line[i+1] > 0 && line[i]-line[i+1] < 4 {
+					safe += 1
+				}
+			}
+			if safe == len(line)-1 {
+				sum += 1
+			}
+		} else if line[0] < line[len(line)-1] {
+			for i := 0; i < len(line)-1; i++ {
+				if line[i+1]-line[i] > 0 && line[i+1]-line[i] < 4 {
+					safe += 1
+				}
+			}
+			if safe == len(line)-1 {
+				sum += 1
+			}
+		}
 	}
+	fmt.Println("sum is ", sum)
 }
