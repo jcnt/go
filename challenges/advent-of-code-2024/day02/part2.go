@@ -34,30 +34,44 @@ func main() {
 
 	for _, line := range reactor {
 		safe := 0
+		ffail := 0
+		fail := 0
 		for i := 0; i < len(line)-1; i++ {
 			if line[i]-line[i+1] > 0 && line[i]-line[i+1] < 4 {
 				safe += 1
 			} else {
-				tl := slices.Delete(line, i+1, i+2)
-				second = append(second, tl)
+				if ffail == 0 {
+					ffail = i
+				}
+				fail += 1
 				break
 			}
 		}
 		if safe == len(line)-1 {
 			sum += 1
+		} else if safe > 0 && fail > 0 {
+			tl := slices.Delete(line, ffail+1, ffail+2)
+			second = append(second, tl)
 		}
 		safe = 0
+		ffail = 0
+		fail = 0
 		for i := 0; i < len(line)-1; i++ {
 			if line[i+1]-line[i] > 0 && line[i+1]-line[i] < 4 {
 				safe += 1
 			} else {
-				tl := slices.Delete(line, i+1, i+2)
-				second = append(second, tl)
+				if ffail == 0 {
+					ffail = i
+				}
+				fail += 1
 				break
 			}
 		}
 		if safe == len(line)-1 {
 			sum += 1
+		} else if safe > 0 && fail > 0 {
+			tl := slices.Delete(line, ffail+1, ffail+2)
+			second = append(second, tl)
 		}
 	}
 
