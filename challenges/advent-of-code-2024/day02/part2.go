@@ -14,7 +14,7 @@ func main() {
 
 	sum := 0
 
-	in, err := os.ReadFile("input")
+	in, err := os.ReadFile("example")
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +49,7 @@ func main() {
 			sum += 1
 			psd = 1
 		} else if safe > 1 {
-			tl := slices.Delete(line, fail+1, fail+2)
+			tl := slices.Delete(line, fail, fail+1)
 			second = append(second, tl)
 			fmt.Println("-----> _1_ line is ", line, "tl is ", tl)
 			sec = 1
@@ -69,11 +69,9 @@ func main() {
 			if safe == len(line)-1 {
 				sum += 1
 			} else {
-				if sec == 0 {
-					tl := slices.Delete(line, fail+1, fail+2)
-					second = append(second, tl)
-					fmt.Println("-----> _2_ line is ", line, "tl is ", tl)
-				}
+				tl := slices.Delete(line, fail, fail+1)
+				second = append(second, tl)
+				fmt.Println("-----> _2_ line is ", line, "tl is ", tl)
 			}
 		}
 		fmt.Println(line, "pass", psd, "safe", safe, "fail", fail)
