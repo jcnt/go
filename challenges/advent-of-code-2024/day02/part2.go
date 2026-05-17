@@ -5,7 +5,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -14,7 +13,7 @@ func main() {
 
 	sum := 0
 
-	in, err := os.ReadFile("input")
+	in, err := os.ReadFile("example")
 	if err != nil {
 		panic(err)
 	}
@@ -34,70 +33,33 @@ func main() {
 
 	for _, line := range reactor {
 		safe := 0
-		ffail := 0
 		fail := 0
 		for i := 0; i < len(line)-1; i++ {
 			if line[i]-line[i+1] > 0 && line[i]-line[i+1] < 4 {
 				safe += 1
-			} else {
-				if ffail == 0 {
-					ffail = i
-				}
-				fail += 1
-				break
 			}
 		}
 		if safe == len(line)-1 {
 			sum += 1
-		} else if safe > 0 && fail > 0 {
-			tl := slices.Delete(line, ffail+1, ffail+2)
-			second = append(second, tl)
+		} else if safe != 0 {
+			fail = 1
 		}
 		safe = 0
-		ffail = 0
-		fail = 0
-		for i := 0; i < len(line)-1; i++ {
-			if line[i+1]-line[i] > 0 && line[i+1]-line[i] < 4 {
-				safe += 1
-			} else {
-				if ffail == 0 {
-					ffail = i
+		if fail == 1 {
+			for i := 0; i < len(line)-1; i++ {
+				if line[i+1]-line[i] > 0 && line[i+1]-line[i] < 4 {
+					safe += 1
 				}
-				fail += 1
-				break
 			}
 		}
 		if safe == len(line)-1 {
 			sum += 1
-		} else if safe > 0 && fail > 0 {
-			tl := slices.Delete(line, ffail+1, ffail+2)
-			second = append(second, tl)
+		} else {
+			second = append(second, line)
 		}
 	}
 
-	for _, line := range second {
-		safe := 0
-		for i := 0; i < len(line)-1; i++ {
-			if line[i]-line[i+1] > 0 && line[i]-line[i+1] < 4 {
-				safe += 1
-			} else {
-				break
-			}
-		}
-		if safe == len(line)-1 {
-			sum += 1
-		}
-		safe = 0
-		for i := 0; i < len(line)-1; i++ {
-			if line[i+1]-line[i] > 0 && line[i+1]-line[i] < 4 {
-				safe += 1
-			} else {
-				break
-			}
-		}
-		if safe == len(line)-1 {
-			sum += 1
-		}
-	}
+	fmt.Println(len(second))
+
 	fmt.Println("sum is ", sum)
 }
