@@ -39,14 +39,14 @@ func main() {
 			if line[i]-line[i+1] > 0 && line[i]-line[i+1] < 4 {
 				safe += 1
 			} else {
-				fail = 1
+				fail = i
 				break
 			}
 		}
 		if safe == len(line)-1 {
 			sum++
 		} else if safe > 1 {
-			fmt.Println(fsecond(line))
+			fmt.Println(fsecond(line, fail))
 		}
 
 		safe = 0
@@ -55,14 +55,14 @@ func main() {
 				if line[i+1]-line[i] > 0 && line[i+1]-line[i] < 4 {
 					safe++
 				} else {
-					fail = 1
+					fail = i
 					break
 				}
 			}
 			if safe == len(line)-1 {
 				sum++
 			} else {
-				fmt.Println(fsecond(line))
+				fmt.Println(fsecond(line, fail))
 			}
 		}
 	}
@@ -70,12 +70,12 @@ func main() {
 	fmt.Println("sum is ", sum)
 }
 
-func fsecond(s []int) bool {
+func fsecond(s []int, f int) bool {
 	r := false
 	for i := 0; i < len(s)-1; i++ {
 		t := make([]int, len(s))
 		copy(t, s)
-		current := slices.Delete(t, i, i+1)
+		current := slices.Delete(t, f, f+1)
 		fmt.Println(current)
 	}
 	return r
