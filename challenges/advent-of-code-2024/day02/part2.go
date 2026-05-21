@@ -72,11 +72,26 @@ func main() {
 
 func fsecond(s []int, f int) bool {
 	r := false
-	for i := 0; i < len(s)-1; i++ {
-		t := make([]int, len(s))
-		copy(t, s)
-		current := slices.Delete(t, f, f+1)
-		fmt.Println(current)
+	safe := 0
+	t := make([]int, len(s))
+	copy(t, s)
+	c := slices.Delete(t, f, f+1)
+	for i := 0; i < len(c)-1; i++ {
+		if c[i]-c[i+1] > 0 && c[i]-c[i+1] < 4 {
+			safe++
+		}
+	}
+	if safe == len(c) {
+		r = true
+	}
+	safe = 0
+	for i := 0; i < len(c)-1; i++ {
+		if c[i+1]-c[i] > 0 && c[i+1]-c[i] < 4 {
+			safe++
+		}
+	}
+	if safe == len(c) {
+		r = true
 	}
 	return r
 }
