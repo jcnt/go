@@ -46,7 +46,11 @@ func main() {
 		if safe == len(line)-1 {
 			sum++
 		} else if safe > 1 {
-			fmt.Println(fsecond(line, fail))
+			if fsecond(line, fail) == true {
+				sum++
+			} else if fsecond(line, fail+1) == true {
+				sum++
+			}
 		}
 
 		safe = 0
@@ -62,7 +66,11 @@ func main() {
 			if safe == len(line)-1 {
 				sum++
 			} else {
-				fmt.Println(fsecond(line, fail))
+				if fsecond(line, fail) == true {
+					sum++
+				} else if fsecond(line, fail+1) == true {
+					sum++
+				}
 			}
 		}
 	}
@@ -81,7 +89,7 @@ func fsecond(s []int, f int) bool {
 			safe++
 		}
 	}
-	if safe == len(c) {
+	if safe == len(c)-1 {
 		r = true
 	}
 	safe = 0
@@ -90,7 +98,7 @@ func fsecond(s []int, f int) bool {
 			safe++
 		}
 	}
-	if safe == len(c) {
+	if safe == len(c)-1 {
 		r = true
 	}
 	return r
