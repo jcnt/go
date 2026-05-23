@@ -1,4 +1,4 @@
-// Advent of Code, 2024. Day 2, part 1.
+// Advent of Code, 2024. Day 2, part 2.
 
 package main
 
@@ -35,6 +35,7 @@ func main() {
 	for _, line := range reactor {
 		safe := 0
 		fail := 0
+		psd := 0
 		for i := 0; i < len(line)-1; i++ {
 			if line[i]-line[i+1] > 0 && line[i]-line[i+1] < 4 {
 				safe += 1
@@ -45,16 +46,19 @@ func main() {
 		}
 		if safe == len(line)-1 {
 			sum++
-		} else if safe > 1 {
+			psd = 1
+		} else if fail != 0 {
 			if fsecond(line, fail) == true {
 				sum++
+				psd = 1
 			} else if fsecond(line, fail+1) == true {
 				sum++
+				psd = 1
 			}
 		}
 
 		safe = 0
-		if fail == 0 {
+		if psd == 0 {
 			for i := 0; i < len(line)-1; i++ {
 				if line[i+1]-line[i] > 0 && line[i+1]-line[i] < 4 {
 					safe++
@@ -93,13 +97,15 @@ func fsecond(s []int, f int) bool {
 		r = true
 	}
 	safe = 0
-	for i := 0; i < len(c)-1; i++ {
-		if c[i+1]-c[i] > 0 && c[i+1]-c[i] < 4 {
-			safe++
+	if r == false {
+		for i := 0; i < len(c)-1; i++ {
+			if c[i+1]-c[i] > 0 && c[i+1]-c[i] < 4 {
+				safe++
+			}
 		}
-	}
-	if safe == len(c)-1 {
-		r = true
+		if safe == len(c)-1 {
+			r = true
+		}
 	}
 	return r
 }
