@@ -5,13 +5,14 @@ package main
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
 
 func main() {
-
 	mulsl := []string{}
+	finsl := []string{}
 	sum := 0
 
 	in, err := os.ReadFile("input")
@@ -25,7 +26,6 @@ func main() {
 	for _, v := range input {
 		if strings.Contains(v, "mul") {
 			mul := strings.Split(v, "mul")
-			fmt.Printf("%q\n", mul)
 			if len(mul) > 1 {
 				mulsl = append(mulsl, mul[len(mul)-1])
 			}
@@ -33,6 +33,13 @@ func main() {
 	}
 
 	for _, v := range mulsl {
+		matched, err := regexp.MatchString(`^\(\d+,\d+\)$`, v)
+		if err == nil && matched == true {
+			finsl = append(finsl, v)
+		}
+	}
+
+	for _, v := range finsl {
 		t := strings.Trim(v, "()")
 		tlist := strings.Split(t, ",")
 		a, _ := strconv.Atoi(tlist[0])
