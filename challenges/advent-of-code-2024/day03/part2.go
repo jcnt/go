@@ -1,4 +1,4 @@
-// Advent of Code, 2024. Day 3, part 1.
+// Advent of Code, 2024. Day 3, part 2.
 
 package main
 
@@ -24,7 +24,14 @@ func main() {
 	input = input[0 : len(input)-1]
 
 	for _, v := range input {
-		if strings.Contains(v, "mul") {
+		is_on := 0
+		fmt.Println("LINE---> ", v)
+		if strings.Contains(v, "don't") {
+			is_on = 1
+		} else if strings.Contains(v, "do") {
+			is_on = 0
+		}
+		if strings.Contains(v, "mul") && is_on == 1 {
 			mul := strings.Split(v, "mul")
 			if len(mul) > 1 {
 				mulsl = append(mulsl, mul[len(mul)-1])
@@ -34,10 +41,6 @@ func main() {
 
 	for _, v := range mulsl {
 		matched, err := regexp.MatchString(`^\(\d+,\d+\)$`, v)
-		if err == nil && matched == true {
-			finsl = append(finsl, v)
-		}
-		matched, err = regexp.MatchString(`do\(\)`, v)
 		if err == nil && matched == true {
 			finsl = append(finsl, v)
 		}
