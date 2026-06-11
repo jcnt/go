@@ -23,13 +23,15 @@ func main() {
 	input := strings.SplitAfter(string(in), ")")
 	input = input[0 : len(input)-1]
 
+	is_on := 1
 	for _, v := range input {
-		is_on := 0
 		fmt.Println("LINE---> ", v)
 		if strings.Contains(v, "don't") {
 			is_on = 1
+			fmt.Println("IS_OFF ----> ")
 		} else if strings.Contains(v, "do") {
 			is_on = 0
+			fmt.Println("IS_ON ----> ")
 		}
 		if strings.Contains(v, "mul") && is_on == 1 {
 			mul := strings.Split(v, "mul")
