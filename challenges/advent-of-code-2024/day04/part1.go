@@ -37,5 +37,24 @@ func main() {
 		}
 	}
 
-	fmt.Println(xlist)
+	for _, v := range xlist {
+		if len(xmas[0])-v.i >= 4 {
+			fmt.Println(v)
+			if xmas[v.l][v.i+1] == "M" && xmas[v.l][v.i+2] == "A" && xmas[v.l][v.i+3] == "S" {
+				fmt.Println("XMAS")
+			}
+		}
+	}
+
+	fmt.Println("----")
+
+	for _, v := range xlist {
+		if len(xmas)-v.l >= 4 {
+			fmt.Println(v)
+			if xmas[v.l+1][v.i] == "M" && xmas[v.l+2][v.i] == "A" && xmas[v.l+3][v.i] == "S" {
+				fmt.Println("XMAS")
+			}
+		}
+	}
+	fmt.Println("----")
 }
