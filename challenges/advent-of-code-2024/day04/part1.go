@@ -1,4 +1,5 @@
 // Advent of Code, 2024. Day 4, part 1.
+
 package main
 
 import (
@@ -37,6 +38,7 @@ func main() {
 		}
 	}
 
+	// left to right
 	for _, v := range xlist {
 		if len(xmas[0])-v.i >= 4 {
 			fmt.Println(v)
@@ -45,13 +47,35 @@ func main() {
 			}
 		}
 	}
-
 	fmt.Println("----")
 
+	// top to down
 	for _, v := range xlist {
 		if len(xmas)-v.l >= 4 {
 			fmt.Println(v)
 			if xmas[v.l+1][v.i] == "M" && xmas[v.l+2][v.i] == "A" && xmas[v.l+3][v.i] == "S" {
+				fmt.Println("XMAS")
+			}
+		}
+	}
+	fmt.Println("----")
+
+	// right up
+	for _, v := range xlist {
+		if v.l >= 3 && len(xmas)-v.i >= 4 {
+			fmt.Println(v)
+			if xmas[v.l-1][v.i+1] == "M" && xmas[v.l-2][v.i+2] == "A" && xmas[v.l-3][v.i+3] == "S" {
+				fmt.Println("XMAS")
+			}
+		}
+	}
+	fmt.Println("----")
+
+	// right down
+	for _, v := range xlist {
+		if v.l <= 6 && v.i <= 6 {
+			fmt.Println(v)
+			if xmas[v.l+1][v.i+1] == "M" && xmas[v.l+2][v.i+2] == "A" && xmas[v.l+3][v.i+3] == "S" {
 				fmt.Println("XMAS")
 			}
 		}
