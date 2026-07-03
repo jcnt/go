@@ -10,6 +10,7 @@ import (
 
 func main() {
 
+	var count int
 	var xmas [][]string
 	type loc struct {
 		l int
@@ -17,7 +18,7 @@ func main() {
 	}
 	var xlist []loc
 
-	in, err := os.ReadFile("example")
+	in, err := os.ReadFile("input")
 	if err != nil {
 		panic(err)
 	}
@@ -41,44 +42,97 @@ func main() {
 	// left to right
 	for _, v := range xlist {
 		if len(xmas[0])-v.i >= 4 {
-			fmt.Println(v)
+			//fmt.Println(v)
 			if xmas[v.l][v.i+1] == "M" && xmas[v.l][v.i+2] == "A" && xmas[v.l][v.i+3] == "S" {
-				fmt.Println("XMAS")
+				//fmt.Println("XMAS")
+				count++
 			}
 		}
 	}
-	fmt.Println("----")
+	//fmt.Println("----")
+
+	// right to left
+	for _, v := range xlist {
+		if v.i >= 3 {
+			//fmt.Println(v)
+			if xmas[v.l][v.i-1] == "M" && xmas[v.l][v.i-2] == "A" && xmas[v.l][v.i-3] == "S" {
+				//fmt.Println("XMAS")
+				count++
+			}
+		}
+	}
+	//fmt.Println("----")
 
 	// top to down
 	for _, v := range xlist {
 		if len(xmas)-v.l >= 4 {
-			fmt.Println(v)
+			//fmt.Println(v)
 			if xmas[v.l+1][v.i] == "M" && xmas[v.l+2][v.i] == "A" && xmas[v.l+3][v.i] == "S" {
-				fmt.Println("XMAS")
+				//fmt.Println("XMAS")
+				count++
 			}
 		}
 	}
-	fmt.Println("----")
+	//fmt.Println("----")
+
+	// bottom to up
+	for _, v := range xlist {
+		if v.l >= 3 {
+			//fmt.Println(v)
+			if xmas[v.l-1][v.i] == "M" && xmas[v.l-2][v.i] == "A" && xmas[v.l-3][v.i] == "S" {
+				//fmt.Println("XMAS")
+				count++
+			}
+		}
+	}
+	//fmt.Println("----")
 
 	// right up
 	for _, v := range xlist {
 		if v.l >= 3 && len(xmas)-v.i >= 4 {
-			fmt.Println(v)
+			//fmt.Println(v)
 			if xmas[v.l-1][v.i+1] == "M" && xmas[v.l-2][v.i+2] == "A" && xmas[v.l-3][v.i+3] == "S" {
-				fmt.Println("XMAS")
+				//fmt.Println("XMAS")
+				count++
 			}
 		}
 	}
-	fmt.Println("----")
+	//fmt.Println("----")
 
 	// right down
 	for _, v := range xlist {
-		if v.l <= 6 && v.i <= 6 {
-			fmt.Println(v)
+		if len(xmas)-v.l >= 4 && len(xmas)-v.i >= 4 {
+			//fmt.Println(v)
 			if xmas[v.l+1][v.i+1] == "M" && xmas[v.l+2][v.i+2] == "A" && xmas[v.l+3][v.i+3] == "S" {
-				fmt.Println("XMAS")
+				//fmt.Println("XMAS")
+				count++
 			}
 		}
 	}
-	fmt.Println("----")
+	//fmt.Println("----")
+
+	// left up
+	for _, v := range xlist {
+		if v.l >= 3 && v.i >= 3 {
+			//fmt.Println(v)
+			if xmas[v.l-1][v.i-1] == "M" && xmas[v.l-2][v.i-2] == "A" && xmas[v.l-3][v.i-3] == "S" {
+				//fmt.Println("XMAS")
+				count++
+			}
+		}
+	}
+	//fmt.Println("----")
+
+	// left down
+	for _, v := range xlist {
+		if len(xmas)-v.l >= 4 && v.i >= 3 {
+			//fmt.Println(v)
+			if xmas[v.l+1][v.i-1] == "M" && xmas[v.l+2][v.i-2] == "A" && xmas[v.l+3][v.i-3] == "S" {
+				//fmt.Println("XMAS")
+				count++
+			}
+		}
+	}
+	//fmt.Println("----")
+	fmt.Println("final number is ", count)
 }
