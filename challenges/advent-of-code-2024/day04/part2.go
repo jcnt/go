@@ -1,4 +1,4 @@
-// Advent of Code, 2024. Day 4, part 1.
+// Advent of Code, 2024. Day 4, part 2.
 
 package main
 
